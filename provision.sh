@@ -1,16 +1,22 @@
 #!/bin/bash
 set -e
 
+# install web servers
 aptitude update
-aptitude install nginx-full -y
+aptitude install nginx-full apache2 -y
 
-mkdir -p /srv/data /var/run/apache2-dav
-chown www-data:www-data /srv/data /var/run/apache2-dav
+# enable apache module
+a2enmod dav
+a2enmod dav_fs
 
+# ensure directory exists
+mkdir -p /vagrant/data
+
+# setup conf files
 cat << 'EOF' > /etc/nginx/sites-available/default
 server {
   listen 8000;
-  root /srv/data;
+  root /vagrant/data;
   server_name localhost;
 
   location / {
@@ -26,16 +32,12 @@ server {
 }
 EOF
 
-aptitude install apache2 -y
-a2enmod dav
-a2enmod dav_fs
-
 cat << 'EOF' > /etc/apache2/sites-available/default
-DavLockDB /var/run/apache2-dav/davlock.db
+DavLockDB /var/tmp/apache2-davlock.db
 ServerName localhost
 
 <VirtualHost *:80>
-  DocumentRoot /srv/data
+  DocumentRoot /vagrant/data
 
   <Location />
     Dav on
@@ -54,6 +56,11 @@ ServerName localhost
 </VirtualHost>
 EOF
 
+# change web servers users to vagrant
+sed -i 's/www-data/vagrant/' /etc/apache2/envvars
+sed -i 's/www-data/vagrant/' /etc/nginx/nginx.conf
+
+chown -R vagrant /var/lock/apache2
 
 service nginx restart
 service apache2 restart

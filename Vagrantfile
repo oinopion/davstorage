@@ -18,7 +18,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.box = "precise32"
   config.vm.box_url = "http://files.vagrantup.com/precise32.box"
 
-  config.vm.network :forwarded_port, guest: 80, host: 6000
+  config.vm.network :forwarded_port, guest: 80, host: 9000
   config.vm.network :forwarded_port, guest: 8000, host: 7000
-  config.vm.provision :shell, :path => "provision.sh"
+  config.vm.provision :shell, path: "provision.sh"
 end
