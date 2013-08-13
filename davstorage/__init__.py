@@ -1,1 +1,1 @@
-__author__ = 'oinopion'
+from .storage import DavStorage

@@ -16,6 +16,7 @@ def parse_options(argv):
     options, args = parser.parse_args(argv)
     return options
 
+
 if __name__ == '__main__':
     options = parse_options(sys.argv)
 

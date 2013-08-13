@@ -8,8 +8,8 @@ from davstorage.storage import DavStorage
 PROJECT_DIR = os.path.dirname(os.path.dirname(__file__))
 DATA_DIR = os.path.join(PROJECT_DIR, 'data')
 
-INTERNAL_URL = 'http://vagrant:vagrant@localhost:9000/'
-EXTERNAL_URL = 'http://localhost:9000/'
+INTERNAL_URL = 'http://vagrant:vagrant@localhost:9000'
+EXTERNAL_URL = 'http://localhost:9000'
 
 
 def clean_data_dir():
