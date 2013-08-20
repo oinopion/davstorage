@@ -22,7 +22,11 @@ class DavStorage(Storage):
     def size(self, name):
         url = self.internal_url(name)
         response = requests.head(url, headers={'accept-encoding': None})
-        return int(response.headers['content-length'])
+        content_length = response.headers.get('content-length')
+        try:
+            return int(content_length)
+        except (TypeError, ValueError):
+            return None
 
     def url(self, name):
         return '%s/%s' % (self._external_url, name)
